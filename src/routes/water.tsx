@@ -11,7 +11,7 @@ export const Route = createFileRoute("/water")({
 });
 
 // Approximate seasonal water need in mm (demo values)
-const NEED: Record<string, number> = { Low: 350, Moderate: 550, High: 1200 };
+const NEED: Record<"Low"|"Moderate"|"High", number> = { Low: 350, Moderate: 550, High: 1200 };
 const METHODS = [
   { name: "Flood / furrow", eff: 0.5, note: "Low cost, but much water is lost." },
   { name: "Sprinkler", eff: 0.75, note: "Good for wheat, pulses, vegetables." },

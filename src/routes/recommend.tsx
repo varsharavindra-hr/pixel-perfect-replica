@@ -209,7 +209,7 @@ function Info({ k, v }: { k: string; v: string }) {
   return <div className="rounded-lg bg-muted px-3 py-2"><dt className="text-xs text-muted-foreground">{k}</dt><dd className="font-semibold">{v}</dd></div>;
 }
 
-function Choice({ label, value, options, hints, onChange, error }: { label: string; value: string; options: string[]; hints?: string[]; onChange: (v: string) => void; error?: string }) {
+function Choice({ label, value, options, hints, onChange, error }: { label: string; value: string; options: string[]; hints?: string[]; onChange: (v: string) => void; error?: string | undefined }) {
   return (
     <fieldset>
       <legend className="mb-1 font-semibold">{label}</legend>

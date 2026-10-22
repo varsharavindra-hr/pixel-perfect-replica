@@ -12,7 +12,7 @@ describe("mock recommendation engine", () => {
     expect(a).toEqual(b);
   });
   it("suggests rice first for the Kharif high-water sample", () => {
-    expect(mockRecommendCrops(SAMPLE_INPUT)[0].crop.id).toBe("rice");
+    expect(mockRecommendCrops(SAMPLE_INPUT)[0]?.crop.id).toBe("rice");
   });
 });
 

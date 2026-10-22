@@ -11,8 +11,8 @@ export const Route = createFileRoute("/soil")({
 });
 
 // Simplified demo thresholds (kg/ha) loosely based on common Soil Health Card ratings.
-const LEVELS = { n: [280, 560], p: [10, 25], k: [110, 280] };
-function rate(v: number, [lo, hi]: number[]) { return v < lo ? "Low" : v > hi ? "High" : "Medium"; }
+const LEVELS: Record<"n"|"p"|"k", [number, number]> = { n: [280, 560], p: [10, 25], k: [110, 280] };
+function rate(v: number, [lo, hi]: [number, number]) { return v < lo ? "Low" : v > hi ? "High" : "Medium"; }
 function phRate(ph: number) { return ph < 5.5 ? "Strongly acidic" : ph < 6.5 ? "Slightly acidic" : ph <= 7.5 ? "Neutral" : ph <= 8.5 ? "Alkaline" : "Strongly alkaline"; }
 
 function SoilPage() {
