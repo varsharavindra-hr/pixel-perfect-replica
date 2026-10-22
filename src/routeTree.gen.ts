@@ -10,7 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AssistantRouteImport } from './routes/assistant'
+import { Route as FertilizerRouteImport } from './routes/fertilizer'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as MarketRouteImport } from './routes/market'
+import { Route as PestsRouteImport } from './routes/pests'
+import { Route as ProfitRouteImport } from './routes/profit'
 import { Route as RecommendRouteImport } from './routes/recommend'
+import { Route as SchemesRouteImport } from './routes/schemes'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SoilRouteImport } from './routes/soil'
+import { Route as WaterRouteImport } from './routes/water'
+import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as CropsIndexRouteImport } from './routes/crops.index'
 import { Route as CropsIdRouteImport } from './routes/crops.$id'
 
@@ -19,9 +30,64 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FertilizerRoute = FertilizerRouteImport.update({
+  id: '/fertilizer',
+  path: '/fertilizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketRoute = MarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PestsRoute = PestsRouteImport.update({
+  id: '/pests',
+  path: '/pests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfitRoute = ProfitRouteImport.update({
+  id: '/profit',
+  path: '/profit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecommendRoute = RecommendRouteImport.update({
   id: '/recommend',
   path: '/recommend',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SchemesRoute = SchemesRouteImport.update({
+  id: '/schemes',
+  path: '/schemes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoilRoute = SoilRouteImport.update({
+  id: '/soil',
+  path: '/soil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WaterRoute = WaterRouteImport.update({
+  id: '/water',
+  path: '/water',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CropsIndexRoute = CropsIndexRouteImport.update({
@@ -37,34 +103,124 @@ const CropsIdRoute = CropsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
+  '/fertilizer': typeof FertilizerRoute
+  '/history': typeof HistoryRoute
+  '/market': typeof MarketRoute
+  '/pests': typeof PestsRoute
+  '/profit': typeof ProfitRoute
   '/recommend': typeof RecommendRoute
+  '/schemes': typeof SchemesRoute
+  '/settings': typeof SettingsRoute
+  '/soil': typeof SoilRoute
+  '/water': typeof WaterRoute
+  '/weather': typeof WeatherRoute
   '/crops/$id': typeof CropsIdRoute
   '/crops/': typeof CropsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
+  '/fertilizer': typeof FertilizerRoute
+  '/history': typeof HistoryRoute
+  '/market': typeof MarketRoute
+  '/pests': typeof PestsRoute
+  '/profit': typeof ProfitRoute
   '/recommend': typeof RecommendRoute
+  '/schemes': typeof SchemesRoute
+  '/settings': typeof SettingsRoute
+  '/soil': typeof SoilRoute
+  '/water': typeof WaterRoute
+  '/weather': typeof WeatherRoute
   '/crops/$id': typeof CropsIdRoute
   '/crops': typeof CropsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
+  '/fertilizer': typeof FertilizerRoute
+  '/history': typeof HistoryRoute
+  '/market': typeof MarketRoute
+  '/pests': typeof PestsRoute
+  '/profit': typeof ProfitRoute
   '/recommend': typeof RecommendRoute
+  '/schemes': typeof SchemesRoute
+  '/settings': typeof SettingsRoute
+  '/soil': typeof SoilRoute
+  '/water': typeof WaterRoute
+  '/weather': typeof WeatherRoute
   '/crops/$id': typeof CropsIdRoute
   '/crops/': typeof CropsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/recommend' | '/crops/$id' | '/crops/'
+  fullPaths:
+    | '/'
+    | '/assistant'
+    | '/fertilizer'
+    | '/history'
+    | '/market'
+    | '/pests'
+    | '/profit'
+    | '/recommend'
+    | '/schemes'
+    | '/settings'
+    | '/soil'
+    | '/water'
+    | '/weather'
+    | '/crops/$id'
+    | '/crops/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/recommend' | '/crops/$id' | '/crops'
-  id: '__root__' | '/' | '/recommend' | '/crops/$id' | '/crops/'
+  to:
+    | '/'
+    | '/assistant'
+    | '/fertilizer'
+    | '/history'
+    | '/market'
+    | '/pests'
+    | '/profit'
+    | '/recommend'
+    | '/schemes'
+    | '/settings'
+    | '/soil'
+    | '/water'
+    | '/weather'
+    | '/crops/$id'
+    | '/crops'
+  id:
+    | '__root__'
+    | '/'
+    | '/assistant'
+    | '/fertilizer'
+    | '/history'
+    | '/market'
+    | '/pests'
+    | '/profit'
+    | '/recommend'
+    | '/schemes'
+    | '/settings'
+    | '/soil'
+    | '/water'
+    | '/weather'
+    | '/crops/$id'
+    | '/crops/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssistantRoute: typeof AssistantRoute
+  FertilizerRoute: typeof FertilizerRoute
+  HistoryRoute: typeof HistoryRoute
+  MarketRoute: typeof MarketRoute
+  PestsRoute: typeof PestsRoute
+  ProfitRoute: typeof ProfitRoute
   RecommendRoute: typeof RecommendRoute
+  SchemesRoute: typeof SchemesRoute
+  SettingsRoute: typeof SettingsRoute
+  SoilRoute: typeof SoilRoute
+  WaterRoute: typeof WaterRoute
+  WeatherRoute: typeof WeatherRoute
   CropsIdRoute: typeof CropsIdRoute
   CropsIndexRoute: typeof CropsIndexRoute
 }
@@ -78,11 +234,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fertilizer': {
+      id: '/fertilizer'
+      path: '/fertilizer'
+      fullPath: '/fertilizer'
+      preLoaderRoute: typeof FertilizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/market': {
+      id: '/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof MarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pests': {
+      id: '/pests'
+      path: '/pests'
+      fullPath: '/pests'
+      preLoaderRoute: typeof PestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profit': {
+      id: '/profit'
+      path: '/profit'
+      fullPath: '/profit'
+      preLoaderRoute: typeof ProfitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recommend': {
       id: '/recommend'
       path: '/recommend'
       fullPath: '/recommend'
       preLoaderRoute: typeof RecommendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/schemes': {
+      id: '/schemes'
+      path: '/schemes'
+      fullPath: '/schemes'
+      preLoaderRoute: typeof SchemesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/soil': {
+      id: '/soil'
+      path: '/soil'
+      fullPath: '/soil'
+      preLoaderRoute: typeof SoilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/water': {
+      id: '/water'
+      path: '/water'
+      fullPath: '/water'
+      preLoaderRoute: typeof WaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crops/': {
@@ -104,7 +337,18 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssistantRoute: AssistantRoute,
+  FertilizerRoute: FertilizerRoute,
+  HistoryRoute: HistoryRoute,
+  MarketRoute: MarketRoute,
+  PestsRoute: PestsRoute,
+  ProfitRoute: ProfitRoute,
   RecommendRoute: RecommendRoute,
+  SchemesRoute: SchemesRoute,
+  SettingsRoute: SettingsRoute,
+  SoilRoute: SoilRoute,
+  WaterRoute: WaterRoute,
+  WeatherRoute: WeatherRoute,
   CropsIdRoute: CropsIdRoute,
   CropsIndexRoute: CropsIndexRoute,
 }
