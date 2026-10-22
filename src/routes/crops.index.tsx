@@ -1,10 +1,10 @@
-import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { BookOpen, Search, Droplets, Clock } from "lucide-react";
 import { PageHeader, CropArt, inputCls } from "@/components/common";
 import { CROPS } from "@/lib/crops";
 
-export const Route = createFileRoute("/crops")({
+export const Route = createFileRoute("/crops/")({
   head: () => ({
     meta: [
       { title: "Crop Explorer – KhetMitra" },
@@ -13,13 +13,8 @@ export const Route = createFileRoute("/crops")({
       { property: "og:description", content: "Browse crops by season, type and water need." },
     ],
   }),
-  component: CropsLayout,
+  component: Explorer,
 });
-
-function CropsLayout() {
-  const { pathname } = useLocation();
-  return pathname === "/crops" || pathname === "/crops/" ? <Explorer /> : <Outlet />;
-}
 
 function Explorer() {
   const [q, setQ] = useState("");

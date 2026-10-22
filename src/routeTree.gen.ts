@@ -10,33 +10,62 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CropsRouteImport } from './routes/crops'
+import { Route as RecommendRouteImport } from './routes/recommend'
+import { Route as CropsIdRouteImport } from './routes/crops.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CropsRoute = CropsRouteImport.update({
+  id: '/crops',
+  path: '/crops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecommendRoute = RecommendRouteImport.update({
+  id: '/recommend',
+  path: '/recommend',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CropsIdRoute = CropsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CropsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/crops': typeof CropsRouteWithChildren
+  '/recommend': typeof RecommendRoute
+  '/crops/$id': typeof CropsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/crops': typeof CropsRouteWithChildren
+  '/recommend': typeof RecommendRoute
+  '/crops/$id': typeof CropsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/crops': typeof CropsRouteWithChildren
+  '/recommend': typeof RecommendRoute
+  '/crops/$id': typeof CropsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/crops' | '/recommend' | '/crops/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/crops' | '/recommend' | '/crops/$id'
+  id: '__root__' | '/' | '/crops' | '/recommend' | '/crops/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CropsRoute: typeof CropsRouteWithChildren
+  RecommendRoute: typeof RecommendRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +77,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crops': {
+      id: '/crops'
+      path: '/crops'
+      fullPath: '/crops'
+      preLoaderRoute: typeof CropsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recommend': {
+      id: '/recommend'
+      path: '/recommend'
+      fullPath: '/recommend'
+      preLoaderRoute: typeof RecommendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crops/$id': {
+      id: '/crops/$id'
+      path: '/$id'
+      fullPath: '/crops/$id'
+      preLoaderRoute: typeof CropsIdRouteImport
+      parentRoute: typeof CropsRoute
+    }
   }
 }
 
+interface CropsRouteChildren {
+  CropsIdRoute: typeof CropsIdRoute
+}
+
+const CropsRouteChildren: CropsRouteChildren = {
+  CropsIdRoute: CropsIdRoute,
+}
+
+const CropsRouteWithChildren = CropsRoute._addFileChildren(CropsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CropsRoute: CropsRouteWithChildren,
+  RecommendRoute: RecommendRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
