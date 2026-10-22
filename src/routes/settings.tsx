@@ -21,7 +21,7 @@ function SettingsPage() {
       <PageHeader title="Settings & Language" subtitle="Saved on this device." icon={<Settings />} />
       <Panel title="Language">
         <div className="grid gap-2 sm:grid-cols-2">
-          {langs.map(([code, label]) => {
+          {langs.map(([code = "en", label]) => {
             const soon = code === "mr" || code === "ta";
             return (
               <button key={code} disabled={soon} onClick={() => { setLang(code); toast.success("Language updated"); }} aria-pressed={lang === code}

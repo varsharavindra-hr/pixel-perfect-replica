@@ -16,14 +16,14 @@ const LIMITS: Record<string, [number, number, string]> = {
 
 export function validateForm(f: FormState): { errors: Partial<Record<keyof FormState, string>>; data: FarmInput | null } {
   const errors: Partial<Record<keyof FormState, string>> = {};
-  const nums: Record<string, number> = {};
+  const nums = {} as Record<"n"|"p"|"k"|"ph"|"temperature"|"humidity"|"rainfall", number>;
   for (const [key, [min, max, label]] of Object.entries(LIMITS)) {
     const raw = (f[key as keyof FormState] as string).trim();
     if (raw === "") { errors[key as keyof FormState] = `Please enter ${label.toLowerCase()}.`; continue; }
     if (!/^-?\d+(\.\d+)?$/.test(raw)) { errors[key as keyof FormState] = `${label} must be a number.`; continue; }
     const v = Number(raw);
     if (v < min || v > max) { errors[key as keyof FormState] = `${label} should be between ${min} and ${max}.`; continue; }
-    nums[key] = v;
+    nums[key as keyof typeof nums] = v;
   }
   if (!f.state) errors.state = "Please select your state.";
   if (!f.district) errors.district = "Please select your district.";
@@ -40,7 +40,7 @@ export function validateForm(f: FormState): { errors: Partial<Record<keyof FormS
     data: {
       n: nums.n, p: nums.p, k: nums.k, ph: nums.ph, temperature: nums.temperature, humidity: nums.humidity, rainfall: nums.rainfall,
       state: f.state, district: f.district, soilType: f.soilType, season: f.season as Season, water: f.water as WaterNeed,
-      irrigation: f.irrigation, area, areaUnit: f.areaUnit,
+      irrigation: f.irrigation, ...(area !== undefined ? { area } : {}), areaUnit: f.areaUnit,
     },
   };
 }

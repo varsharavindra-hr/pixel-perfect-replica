@@ -19,7 +19,7 @@ const SCHEMES = [
 ];
 
 function SchemesPage() {
-  const [open, setOpen] = useState<string | null>(SCHEMES[0].name);
+  const [open, setOpen] = useState<string | null>(SCHEMES[0]?.name ?? null);
   return (
     <div className="space-y-5">
       <PageHeader title="Government Schemes" subtitle="Support available for farmers. Tap a scheme to learn more." icon={<Landmark />} />

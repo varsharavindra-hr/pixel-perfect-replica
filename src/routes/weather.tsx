@@ -54,7 +54,7 @@ function WeatherPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
             <thead><tr><th className="p-2 text-left">Crop</th>{MONTHS.map((m) => <th key={m} className="p-1 text-xs font-medium text-muted-foreground">{m}</th>)}</tr></thead>
-            <tbody>{CAL[season].map((r) => (
+            <tbody>{(CAL[season] ?? []).map((r) => (
               <tr key={r.crop} className="border-t"><td className="p-2 font-semibold">{r.crop}</td>
                 {MONTHS.map((m, i) => <td key={m} className="p-1"><div className={`h-6 rounded ${r.sow.includes(i) ? "bg-primary" : r.harvest.includes(i) ? "bg-warning" : "bg-muted"}`} /></td>)}
               </tr>

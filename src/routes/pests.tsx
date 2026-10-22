@@ -27,7 +27,7 @@ function PestPage() {
   const onFile = (f?: File) => {
     if (!f) return;
     setFile(URL.createObjectURL(f)); setDemo(null); setChecking(true);
-    setTimeout(() => { setDemo(PESTS[f.name.length % PESTS.length]); setChecking(false); }, 900);
+    setTimeout(() => { setDemo(PESTS[f.name.length % PESTS.length] ?? null); setChecking(false); }, 900);
   };
   return (
     <div className="space-y-5">
