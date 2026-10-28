@@ -1,33 +1,64 @@
 import { describe, expect, it } from "vitest";
-import { mockRecommendCrops, SAMPLE_INPUT } from "@/lib/recommend";
-import { validateForm } from "@/lib/validate";
+import { recommendRegionalCrops, SAMPLE_REGIONAL_INPUT } from "@/lib/recommend";
+import { validateRegionalForm, type FormState } from "@/lib/validate";
 
-describe("mock recommendation engine", () => {
-  it("returns exactly three crops", () => {
-    expect(mockRecommendCrops(SAMPLE_INPUT)).toHaveLength(3);
+describe("Raitha Bandhu Regional Recommendation Engine", () => {
+  it("returns suitable regional crops", () => {
+    const results = recommendRegionalCrops(SAMPLE_REGIONAL_INPUT);
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.length).toBeLessThanOrEqual(4);
   });
-  it("is deterministic for the same input", () => {
-    const a = mockRecommendCrops(SAMPLE_INPUT).map((r) => r.crop.id);
-    const b = mockRecommendCrops(SAMPLE_INPUT).map((r) => r.crop.id);
+
+  it("is deterministic for the same regional input", () => {
+    const a = recommendRegionalCrops(SAMPLE_REGIONAL_INPUT).map((r) => r.crop.id);
+    const b = recommendRegionalCrops(SAMPLE_REGIONAL_INPUT).map((r) => r.crop.id);
     expect(a).toEqual(b);
   });
-  it("suggests rice first for the Kharif high-water sample", () => {
-    expect(mockRecommendCrops(SAMPLE_INPUT)[0]?.crop.id).toBe("rice");
+
+  it("suggests Ragi (Finger Millet) as top crop for Kanakapura rainfed Kharif red soils", () => {
+    const top = recommendRegionalCrops(SAMPLE_REGIONAL_INPUT)[0]?.crop.id;
+    expect(top).toBe("ragi");
   });
 });
 
-describe("form validation", () => {
-  const base = { n: "90", p: "42", k: "43", ph: "6.5", temperature: "26", humidity: "80", rainfall: "200", state: "Bihar", district: "Patna", soilType: "", season: "Kharif" as const, water: "High" as const, irrigation: false, area: "", areaUnit: "acre" as const };
-  it("rejects pH above 14", () => {
-    expect(validateForm({ ...base, ph: "15" }).errors.ph).toBeTruthy();
+describe("Regional Form Validation", () => {
+  const base: FormState = {
+    taluk: "Kanakapura",
+    village: "Sathnur",
+    soilType: "Red sandy loam",
+    season: "Kharif",
+    water: "Low",
+    irrigation: false,
+    area: "2.5",
+    areaUnit: "acre",
+    n: "",
+    p: "",
+    k: "",
+    ph: "",
+    temperature: "",
+    humidity: "",
+    rainfall: "",
+  };
+
+  it("accepts valid input with optional soil test values left blank", () => {
+    const res = validateRegionalForm(base, "en");
+    expect(res.data).not.toBeNull();
+    expect(res.data?.taluk).toBe("Kanakapura");
+    expect(res.data?.ph).toBeUndefined();
   });
-  it("rejects non-numeric nitrogen", () => {
-    expect(validateForm({ ...base, n: "abc" }).errors.n).toBeTruthy();
+
+  it("rejects invalid numeric pH when provided", () => {
+    const res = validateRegionalForm({ ...base, ph: "15" }, "en");
+    expect(res.errors.ph).toBeTruthy();
   });
-  it("rejects humidity above 100", () => {
-    expect(validateForm({ ...base, humidity: "120" }).errors.humidity).toBeTruthy();
+
+  it("rejects non-numeric nitrogen when provided", () => {
+    const res = validateRegionalForm({ ...base, n: "invalid" }, "en");
+    expect(res.errors.n).toBeTruthy();
   });
-  it("accepts valid input unchanged", () => {
-    expect(validateForm(base).data?.n).toBe(90);
+
+  it("rejects empty taluk", () => {
+    const res = validateRegionalForm({ ...base, taluk: "" }, "en");
+    expect(res.errors.taluk).toBeTruthy();
   });
 });

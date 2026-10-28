@@ -15,6 +15,7 @@ import { Route as FertilizerRouteImport } from './routes/fertilizer'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as MarketRouteImport } from './routes/market'
 import { Route as PestsRouteImport } from './routes/pests'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProfitRouteImport } from './routes/profit'
 import { Route as RecommendRouteImport } from './routes/recommend'
 import { Route as SchemesRouteImport } from './routes/schemes'
@@ -53,6 +54,11 @@ const MarketRoute = MarketRouteImport.update({
 const PestsRoute = PestsRouteImport.update({
   id: '/pests',
   path: '/pests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfitRoute = ProfitRouteImport.update({
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/history': typeof HistoryRoute
   '/market': typeof MarketRoute
   '/pests': typeof PestsRoute
+  '/profile': typeof ProfileRoute
   '/profit': typeof ProfitRoute
   '/recommend': typeof RecommendRoute
   '/schemes': typeof SchemesRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/history': typeof HistoryRoute
   '/market': typeof MarketRoute
   '/pests': typeof PestsRoute
+  '/profile': typeof ProfileRoute
   '/profit': typeof ProfitRoute
   '/recommend': typeof RecommendRoute
   '/schemes': typeof SchemesRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/history': typeof HistoryRoute
   '/market': typeof MarketRoute
   '/pests': typeof PestsRoute
+  '/profile': typeof ProfileRoute
   '/profit': typeof ProfitRoute
   '/recommend': typeof RecommendRoute
   '/schemes': typeof SchemesRoute
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/market'
     | '/pests'
+    | '/profile'
     | '/profit'
     | '/recommend'
     | '/schemes'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/market'
     | '/pests'
+    | '/profile'
     | '/profit'
     | '/recommend'
     | '/schemes'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/history'
     | '/market'
     | '/pests'
+    | '/profile'
     | '/profit'
     | '/recommend'
     | '/schemes'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   HistoryRoute: typeof HistoryRoute
   MarketRoute: typeof MarketRoute
   PestsRoute: typeof PestsRoute
+  ProfileRoute: typeof ProfileRoute
   ProfitRoute: typeof ProfitRoute
   RecommendRoute: typeof RecommendRoute
   SchemesRoute: typeof SchemesRoute
@@ -267,6 +280,13 @@ declare module '@tanstack/react-router' {
       path: '/pests'
       fullPath: '/pests'
       preLoaderRoute: typeof PestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profit': {
@@ -342,6 +362,7 @@ const rootRouteChildren: RootRouteChildren = {
   HistoryRoute: HistoryRoute,
   MarketRoute: MarketRoute,
   PestsRoute: PestsRoute,
+  ProfileRoute: ProfileRoute,
   ProfitRoute: ProfitRoute,
   RecommendRoute: RecommendRoute,
   SchemesRoute: SchemesRoute,

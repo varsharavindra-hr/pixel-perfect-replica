@@ -1,125 +1,238 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sprout, FlaskConical, IndianRupee, CloudSun, Droplets, Thermometer, Wind, Lightbulb, ArrowRight } from "lucide-react";
-import hero from "@/assets/hero-farm.jpg";
-import { DemoBadge, Panel, CropArt } from "@/components/common";
-import { NAV } from "@/components/AppShell";
-import { useSaved } from "@/lib/storage";
-import { CROPS } from "@/lib/crops";
+import { Sprout, BookOpen, FlaskConical, Bookmark, ArrowRight, UserCheck, LogIn, MapPin } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
+import { useFarmerAuth, useSaved } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "KhetMitra – Smart Crop Advisor for Indian Farmers" },
-      { name: "description", content: "Find crops that may suit your soil, weather, season and water. Free demo for Indian farmers." },
-      { property: "og:title", content: "KhetMitra – Smart Crop Advisor" },
-      { property: "og:description", content: "Find crops that may suit your soil, weather, season and water." },
+      { title: "Raitha Bandhu (ರೈತ ಬಂಧು) – Crop Advisory for Southern Bengaluru" },
+      { name: "description", content: "Region-specific crop recommendations for Harohalli, Kanakapura & Southern Bengaluru farmers." },
+      { property: "og:title", content: "Raitha Bandhu (ರೈತ ಬಂಧು)" },
+      { property: "og:description", content: "Practical crop advisory tailored to Harohalli, Kanakapura and Southern Bengaluru." },
     ],
   }),
   component: Dashboard,
 });
 
-const TIPS = [
-  "Test your soil every 2–3 years using the Soil Health Card scheme.",
-  "Rotate cereals with pulses to naturally improve soil nitrogen.",
-  "Mulching can cut irrigation water needs by up to a quarter.",
-];
-
 function Dashboard() {
+  const { lang, setLang, t } = useI18n();
+  const { farmer } = useFarmerAuth();
   const [saved] = useSaved();
-  const seasonal = CROPS.filter((c) => c.seasons.includes("Rabi")).slice(0, 4);
-  const nutrients = [
-    { k: "Nitrogen", v: 72, max: 140, tone: "bg-chart-1" },
-    { k: "Phosphorus", v: 38, max: 80, tone: "bg-chart-3" },
-    { k: "Potassium", v: 45, max: 80, tone: "bg-chart-2" },
-  ];
+
   return (
-    <div className="space-y-6">
-      <section className="relative overflow-hidden rounded-3xl shadow-elevated">
-        <img src={hero} alt="Green farm fields at sunrise" width={1600} height={800} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-hero-overlay" />
-        <div className="relative max-w-xl p-6 py-10 sm:p-10 sm:py-14 text-primary-foreground">
-          <p className="text-sm font-semibold uppercase tracking-wider text-accent">Namaste, kisan ji 🙏</p>
-          <h1 className="mt-2 text-3xl font-semibold sm:text-5xl">Choose the right crop for your field</h1>
-          <p className="mt-3 text-primary-foreground/90">Enter your soil and weather details. We will show crops that may suit your land, season and water.</p>
-          <Link to="/recommend" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-base font-semibold text-accent-foreground shadow-elevated transition hover:brightness-105">
-            <Sprout className="h-5 w-5" /> Get Crop Recommendations
+    <div className="space-y-8 max-w-4xl mx-auto py-2">
+      {/* Top Header Card: Branding, Welcome, Language, Farmer Status */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-primary" />
+            <span className="text-xs font-bold tracking-wider text-primary uppercase">
+              {lang === "kn" ? "ಕರ್ನಾಟಕ ಸರ್ಕಾರ • ಕೃಷಿ ಸಲಹಾ ಸೇವೆ" : "Karnataka • Agricultural Advisory"}
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mt-1">
+            {t.dashboard.welcome}
+          </h1>
+          <p className="text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+            <MapPin className="h-4 w-4 text-primary shrink-0" />
+            <span>
+              {lang === "kn"
+                ? "ಹಾರೋಹಳ್ಳಿ • ಕನಕಪುರ • ರಾಮನಗರ • ದಕ್ಷಿಣ ಬೆಂಗಳೂರು"
+                : "Harohalli • Kanakapura • Ramanagara • Southern Bengaluru"}
+            </span>
+          </p>
+        </div>
+
+        {/* Quick Actions: Language Selector & Login/Profile */}
+        <div className="flex items-center gap-2.5 self-start sm:self-center">
+          {/* Language Selector */}
+          <div className="inline-flex rounded-xl border border-border bg-background p-1 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setLang("kn")}
+              className={`rounded-lg px-2.5 py-1.5 transition ${
+                lang === "kn"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              ಕನ್ನಡ
+            </button>
+            <button
+              type="button"
+              onClick={() => setLang("en")}
+              className={`rounded-lg px-2.5 py-1.5 transition ${
+                lang === "en"
+                  ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              English
+            </button>
+          </div>
+
+          {/* Farmer Profile / Login Entry Point */}
+          <Link
+            to="/profile"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-semibold hover:border-primary transition"
+          >
+            {farmer.isLoggedIn ? (
+              <>
+                <UserCheck className="h-4 w-4 text-primary" />
+                <span className="truncate max-w-[100px]">{farmer.name || t.nav.profile}</span>
+              </>
+            ) : (
+              <>
+                <LogIn className="h-4 w-4 text-muted-foreground" />
+                <span>{t.auth.title}</span>
+              </>
+            )}
           </Link>
+        </div>
+      </div>
+
+      {/* Hero Section: Centered, Calm, Uncluttered with ONE Prominent Primary Action */}
+      <section className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-b from-secondary/70 via-background to-card p-6 sm:p-10 text-center shadow-sm">
+        <div className="max-w-2xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary">
+            <Sprout className="h-4 w-4" />
+            <span>{t.dashboard.tagline}</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-snug">
+            {lang === "kn"
+              ? "ನಿಮ್ಮ ಮಣ್ಣು ಮತ್ತು ನೀರಿಗೆ ಸರಿಹೊಂದುವ ಸೂಕ್ತ ಬೆಳೆಗಳನ್ನು ಆರಿಸಿ"
+              : "Identify the Most Suitable Crops for Your Land & Water"}
+          </h2>
+
+          <p className="text-base text-muted-foreground leading-relaxed">
+            {t.dashboard.description}
+          </p>
+
+          {/* ONE PROMINENT PRIMARY ACTION */}
+          <div className="pt-4">
+            <Link
+              to="/recommend"
+              id="get-recommendation-cta"
+              className="inline-flex items-center justify-center gap-3 rounded-2xl bg-primary px-8 py-4 text-lg font-bold text-primary-foreground shadow-md transition hover:bg-primary/95 hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <Sprout className="h-6 w-6 text-accent" />
+              <span>{t.dashboard.primaryAction}</span>
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+
+          <p className="text-xs text-muted-foreground/80 pt-2">
+            {lang === "kn"
+              ? "ಕೇವಲ 2 ನಿಮಿಷಗಳಲ್ಲಿ ಸ್ಥಳೀಯ ಕೃಷಿ ಶಿಫಾರಸು ಪಡೆಯಿರಿ • ಮಣ್ಣು ಪರೀಕ್ಷೆ ಕಡ್ಡಾಯವಲ್ಲ"
+              : "Get personalized regional guidance in 2 minutes • Soil test optional"}
+          </p>
         </div>
       </section>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        {[
-          { to: "/recommend", label: "Crop recommendation", icon: Sprout },
-          { to: "/soil", label: "Soil analysis", icon: FlaskConical },
-          { to: "/profit", label: "Compare crops", icon: IndianRupee },
-        ].map(({ to, label, icon: Icon }) => (
-          <Link key={to} to={to} className="flex items-center gap-3 rounded-2xl border bg-card p-4 shadow-card transition hover:border-primary">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary text-primary-foreground"><Icon className="h-5 w-5" /></div>
-            <span className="font-semibold">{label}</span>
-            <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground" />
-          </Link>
-        ))}
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Panel title="Today's weather" action={<DemoBadge />}>
-          <div className="flex items-center gap-4">
-            <CloudSun className="h-14 w-14 text-warning" />
-            <div><div className="text-4xl font-semibold">29°C</div><div className="text-muted-foreground">Partly cloudy · Nashik, MH</div></div>
-          </div>
-          <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
-            <div className="rounded-lg bg-muted p-3"><Droplets className="h-4 w-4 text-sky" />Humidity<br /><b>68%</b></div>
-            <div className="rounded-lg bg-muted p-3"><Thermometer className="h-4 w-4 text-destructive" />Min/Max<br /><b>21°/31°</b></div>
-            <div className="rounded-lg bg-muted p-3"><Wind className="h-4 w-4 text-primary" />Wind<br /><b>12 km/h</b></div>
-          </div>
-        </Panel>
-        <Panel title="Soil nutrient summary" action={<DemoBadge />}>
-          <div className="space-y-4">
-            {nutrients.map((n) => (
-              <div key={n.k}>
-                <div className="mb-1 flex justify-between text-sm"><span>{n.k}</span><b>{n.v} kg/ha</b></div>
-                <div className="h-2.5 rounded-full bg-muted"><div className={`h-full rounded-full ${n.tone}`} style={{ width: `${(n.v / n.max) * 100}%` }} /></div>
-              </div>
-            ))}
-            <p className="text-sm text-muted-foreground">pH 6.8 · Neutral — good for most crops.</p>
-          </div>
-        </Panel>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Panel title="Recent recommendations" className="lg:col-span-1">
-          {saved.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nothing saved yet. <Link to="/recommend" className="font-semibold text-primary underline">Try a recommendation</Link>.</p>
-          ) : (
-            <ul className="space-y-2">{saved.slice(0, 4).map((s) => (
-              <li key={s.id} className="flex justify-between rounded-lg bg-muted p-3 text-sm"><b>{s.cropName}</b><span className="text-muted-foreground">{s.season}</span></li>
-            ))}</ul>
-          )}
-        </Panel>
-        <Panel title="This Rabi season" className="lg:col-span-2">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {seasonal.map((c) => (
-              <Link key={c.id} to="/crops/$id" params={{ id: c.id }} className="flex flex-col items-center gap-2 rounded-xl border p-3 text-center hover:border-primary">
-                <CropArt emoji={c.emoji} /><span className="text-sm font-semibold">{c.name}</span>
-              </Link>
-            ))}
-          </div>
-        </Panel>
-      </div>
-
-      <Panel title="Farming tips">
-        <ul className="grid gap-3 sm:grid-cols-3">{TIPS.map((t) => (
-          <li key={t} className="flex gap-2 rounded-xl bg-secondary/60 p-4 text-sm"><Lightbulb className="h-5 w-5 shrink-0 text-primary" />{t}</li>
-        ))}</ul>
-      </Panel>
-
-      <Panel title="All tools">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-          {NAV.slice(1).map(({ to, en, icon: Icon }) => (
-            <Link key={to} to={to} className="flex items-center gap-2 rounded-lg p-3 text-sm font-medium hover:bg-muted"><Icon className="h-4 w-4 text-primary" />{en}</Link>
-          ))}
+      {/* Regional Focus Banner */}
+      <div className="rounded-2xl border border-primary/15 bg-secondary/40 p-4 text-sm text-foreground flex items-start gap-3">
+        <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary/15 text-primary shrink-0 mt-0.5">
+          <MapPin className="h-4 w-4" />
         </div>
-      </Panel>
+        <div className="text-xs sm:text-sm leading-relaxed">
+          <span className="font-bold text-primary">
+            {lang === "kn" ? "ಪ್ರಾದೇಶಿಕ ಪರಿಶೀಲನೆ:" : "Regional Verification:"}
+          </span>{" "}
+          {t.dashboard.regionNotice}
+        </div>
+      </div>
+
+      {/* Minimal Secondary Navigation Cards */}
+      <div>
+        <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3 px-1">
+          {t.dashboard.secondaryTitle}
+        </h3>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Link
+            to="/crops"
+            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 hover:border-primary transition group shadow-xs"
+          >
+            <div>
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-secondary text-primary group-hover:bg-primary group-hover:text-primary-foreground transition mb-3">
+                <BookOpen className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-foreground text-base">
+                {t.dashboard.cropExplorerTitle}
+              </h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {t.dashboard.cropExplorerDesc}
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-primary mt-4">
+              <span>{lang === "kn" ? "ಬೆಳೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ" : "Explore crops"}</span>
+              <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition" />
+            </div>
+          </Link>
+
+          <Link
+            to="/soil"
+            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 hover:border-primary transition group shadow-xs"
+          >
+            <div>
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-secondary text-primary group-hover:bg-primary group-hover:text-primary-foreground transition mb-3">
+                <FlaskConical className="h-5 w-5" />
+              </div>
+              <h4 className="font-bold text-foreground text-base">
+                {t.dashboard.soilTitle}
+              </h4>
+              <p className="text-xs text-muted-foreground mt-1">
+                {t.dashboard.soilDesc}
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-primary mt-4">
+              <span>{lang === "kn" ? "ಮಣ್ಣಿನ ಮಾಹಿತಿ" : "Check soil"}</span>
+              <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition" />
+            </div>
+          </Link>
+
+          <Link
+            to="/history"
+            className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 hover:border-primary transition group shadow-xs"
+          >
+            <div>
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-secondary text-primary group-hover:bg-primary group-hover:text-primary-foreground transition mb-3">
+                <Bookmark className="h-5 w-5" />
+              </div>
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-foreground text-base">
+                  {t.dashboard.historyTitle}
+                </h4>
+                {saved.length > 0 && (
+                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">
+                    {saved.length}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {t.dashboard.historyDesc}
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-primary mt-4">
+              <span>{lang === "kn" ? "ಉಳಿಸಿದ ಪಟ್ಟಿ" : "View saved"}</span>
+              <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition" />
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* Honest Advisory Footnote */}
+      <footer className="text-center pt-4 border-t border-border">
+        <p className="text-xs text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          {t.dashboard.disclaimer}
+        </p>
+        <p className="text-[11px] text-muted-foreground/75 mt-2">
+          {lang === "kn"
+            ? "ಸಂಪರ್ಕ: ಕೃಷಿ ಇಲಾಖೆ ಸಹಾಯವಾಣಿ 1800-180-1551 • ಬೆಂಗಳೂರು ಕೃಷಿ ವಿವಿ (GKVK)"
+            : "Kisan Call Centre: 1800-180-1551 • UAS Bengaluru (GKVK)"}
+        </p>
+      </footer>
     </div>
   );
 }
