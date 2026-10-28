@@ -14,7 +14,71 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          farm_details: Json
+          id: string
+          language: string
+          name: string
+          taluk: string
+          updated_at: string
+          village: string
+        }
+        Insert: {
+          farm_details?: Json
+          id: string
+          language?: string
+          name?: string
+          taluk?: string
+          updated_at?: string
+          village?: string
+        }
+        Update: {
+          farm_details?: Json
+          id?: string
+          language?: string
+          name?: string
+          taluk?: string
+          updated_at?: string
+          village?: string
+        }
+        Relationships: []
+      }
+      saved_recommendations: {
+        Row: {
+          crop_id: string
+          farm_input: Json
+          id: string
+          result: Json
+          saved_at: string
+          user_id: string
+        }
+        Insert: {
+          crop_id: string
+          farm_input: Json
+          id?: string
+          result: Json
+          saved_at?: string
+          user_id: string
+        }
+        Update: {
+          crop_id?: string
+          farm_input?: Json
+          id?: string
+          result?: Json
+          saved_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_recommendations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
